@@ -13,20 +13,20 @@ API para gestionar **productos** y **carritos de compra** con persistencia en ar
 ```
 
 primera_entrega/
-├─ .gitignore
-└─ src/
-│  ├─ routes/
-│  │  ├─ products.router.js
-│  │  └─ carts.router.js
+├─ src/
+│  ├─ data/
+│  │  ├─ carts.json
+│  │  └─ products.json
 │  ├─ managers/
-│  │  ├─ ProductManager.js
-│  │  └─ CartManager.js
+│  │  ├─ CartManager.js
+│  │  └─ ProductManager.js
+│  ├─ routes/
+│  │  ├─ carts.router.js
+│  │  └─ products.router.js
 │  ├─ utils/
 │  │  └─ fileUtils.js
-│  ├─ data/
-│  │  ├─ products.json
-│  │  └─ carts.json
 │  └─ app.js
+├─ .gitignore
 ├─ README.md
 ├─ package-lock.json
 ├─ package.json
