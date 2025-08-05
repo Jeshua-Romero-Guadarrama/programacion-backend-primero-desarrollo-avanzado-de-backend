@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Laptop Pro 14",
+    "description": "Equipo port�til de alto rendimiento",
+    "code": "LP14-001",
+    "price": 28999.9,
+    "status": true,
+    "stock": 50,
+    "category": "computo",
+    "thumbnails": [
+      "images/lp14-front.jpg",
+      "images/lp14-back.jpg"
+    ]
+  }
+]
