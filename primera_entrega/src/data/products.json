@@ -1,16 +1,15 @@
 [
   {
-    "id": 1,
-    "title": "Laptop Pro 14",
-    "description": "Equipo port�til de alto rendimiento",
-    "code": "LP14-001",
-    "price": 28999.9,
+    "id": 2,
+    "title": "Mouse Inalámbrico",
+    "description": "Mouse óptico 1600dpi",
+    "code": "MS-001",
+    "price": 399,
     "status": true,
-    "stock": 50,
-    "category": "computo",
+    "stock": 200,
+    "category": "accesorios",
     "thumbnails": [
-      "images/lp14-front.jpg",
-      "images/lp14-back.jpg"
+      "images/mouse.jpg"
     ]
   }
 ]

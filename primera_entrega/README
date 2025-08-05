@@ -27,7 +27,8 @@ mi-api/
 │  └─ fileUtils.js
 └─ data/
 ├─ products.json
-└─ carts.json
+├─ carts.json
+└─ test_api.ps
 
 ````
 
@@ -181,13 +182,122 @@ Invoke-RestMethod -Method POST -Uri "http://localhost:8080/api/carts/$($cart.dat
 Invoke-RestMethod -Method GET -Uri "http://localhost:8080/api/carts/$($cart.data.id)"
 ```
 
+## Pruebas automatizadas (PowerShell)
+
+Para ejecutar toda la batería de pruebas de una sola vez:
+
+1. Archivo `test_api.ps1` en la raíz:
+
+    ```powershell
+   try {
+     chcp 65001 > $null
+     [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+   } catch {}
+
+   $BaseUrl = "http://localhost:8080"
+
+   function Step($title) {
+     Write-Host "`n===================================================="
+     Write-Host ">> $title"
+     Write-Host "===================================================="
+   }
+
+   function Get-AllProducts { Invoke-RestMethod -Method GET -Uri "$BaseUrl/api/products" }
+
+   function Find-ProductIdByCode([string]$code) {
+     $all = Get-AllProducts
+     foreach ($p in $all.data) { if ($p.code -eq $code) { return $p.id } }
+     return $null
+   }
+
+   function Ensure-Product([hashtable]$product){
+     $existingId = Find-ProductIdByCode $product.code
+     if ($existingId) {
+       Step "Producto con code '$($product.code)' ya existe. Reusando id=$existingId"
+       return $existingId
+     }
+     $body = $product | ConvertTo-Json
+     $resp = Invoke-RestMethod -Method POST -Uri "$BaseUrl/api/products" -ContentType "application/json" -Body $body
+     ($resp | ConvertTo-Json -Depth 6) | Write-Host
+     return $resp.data.id
+   }
+
+   # Productos base
+   $p1Spec = @{
+     title="Laptop Pro 14"; description="Equipo portátil de alto rendimiento"; code="LP14-001";
+     price=28999.90; status=$true; stock=50; category="computo";
+     thumbnails=@("images/lp14-front.jpg","images/lp14-back.jpg")
+   }
+   $p2Spec = @{
+     title="Mouse Inalámbrico"; description="Mouse óptico 1600dpi"; code="MS-001";
+     price=399.00; status=$true; stock=200; category="accesorios"; thumbnails=@("images/mouse.jpg")
+   }
+
+   Step "Asegurar producto 1 (crea o reutiliza)"
+   $p1id = Ensure-Product $p1Spec
+   Write-Host "p1id = $p1id"
+
+   Step "Asegurar producto 2 (crea o reutiliza)"
+   $p2id = Ensure-Product $p2Spec
+   Write-Host "p2id = $p2id"
+
+   Step "Listar todos los productos"
+   (Get-AllProducts | ConvertTo-Json -Depth 6) | Write-Host
+
+   Step "Obtener producto 1 por id"
+   Invoke-RestMethod -Method GET -Uri "$BaseUrl/api/products/$p1id" | ConvertTo-Json -Depth 6 | Write-Host
+
+   Step "Actualizar producto 1 (precio/stock)"
+   $upd = @{ price = 27999.90; stock = 45 } | ConvertTo-Json
+   Invoke-RestMethod -Method PUT -Uri "$BaseUrl/api/products/$p1id" -ContentType "application/json" -Body $upd | ConvertTo-Json -Depth 6 | Write-Host
+
+   Step "Eliminar producto 1"
+   Invoke-RestMethod -Method DELETE -Uri "$BaseUrl/api/products/$p1id" | ConvertTo-Json -Depth 6 | Write-Host
+
+   Step "Crear carrito"
+   $cart = Invoke-RestMethod -Method POST -Uri "$BaseUrl/api/carts"
+   $cid = $cart.data.id
+   ($cart | ConvertTo-Json -Depth 6) | Write-Host
+   Write-Host "cid = $cid"
+
+   Step "Agregar producto 2 al carrito (dos veces)"
+   Invoke-RestMethod -Method POST -Uri "$BaseUrl/api/carts/$cid/product/$p2id" | ConvertTo-Json -Depth 6 | Write-Host
+   Invoke-RestMethod -Method POST -Uri "$BaseUrl/api/carts/$cid/product/$p2id" | ConvertTo-Json -Depth 6 | Write-Host
+
+   Step "Consultar productos del carrito"
+   Invoke-RestMethod -Method GET -Uri "$BaseUrl/api/carts/$cid" | ConvertTo-Json -Depth 6 | Write-Host
+
+   Step "FIN"
+   ```
+
+2. Ejecutar:
+
+   ```powershell
+   # en una terminal PowerShell, con el servidor ya corriendo
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+   .\test_api.ps1
+   ```
+
+## Reset de datos
+
+```powershell
+'[]' | Set-Content -Encoding UTF8 .\src\data\products.json
+'[]' | Set-Content -Encoding UTF8 .\src\data\carts.json
+```
+
+### Resultados esperados (resumen)
+
+* **Productos**: creación/lectura/actualización/eliminación OK; `code` único (409 si se repite).
+* **Carritos**: `POST /api/carts` crea `{ id, products: [] }`; `POST /:cid/product/:pid` agrega o incrementa `quantity`; `GET /:cid` lista productos del carrito.
+* Los archivos `src/data/products.json` y `src/data/carts.json` muestran los cambios en JSON legible.
+
 ## Validación visual
 
-* Revisa `src/data/products.json` y `src/data/carts.json` después de cada operación.
+* Revisar `src/data/products.json` y `src/data/carts.json` después de cada operación.
 * Deben reflejar los cambios en un formato legible (JSON con sangría).
 
 ## Notas
 
-* La ruta raíz `/` no está definida por defecto. Usa `/health`, `/api/products`, `/api/carts`.
-* `id` de productos y carritos se autogenera y **no es editable** por API.
-* Si intentas repetir `code` de producto, la API responde **409**.
+* La ruta raíz `/` no está definida por defecto. Usar `/health`, `/api/products`, `/api/carts`.
+* `id` de productos y carritos se autogeneran y **no es editable** por API.
+* Si se intenta repetir `code` de producto, la API responde **409**.
