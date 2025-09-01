@@ -1,13 +1,13 @@
 const path = require('path');
 const { readJSON, writeJSON } = require('../utils/fileUtils');
-const ProductManager = require('./ProductManager');
+const { productManager } = require('../di');
 
 class CartManager {
   constructor() {
     // Ruta absoluta al archivo de persistencia de carritos (carts.json)
     this.filePath = path.join(__dirname, '..', 'data', 'carts.json');
     // Se instancia ProductManager para validar la existencia de productos al agregarlos al carrito
-    this.productManager = new ProductManager();
+    this.productManager = productManager;
   }
 
   // Lee todos los carritos desde el archivo JSON (si no existe, devuelve [])

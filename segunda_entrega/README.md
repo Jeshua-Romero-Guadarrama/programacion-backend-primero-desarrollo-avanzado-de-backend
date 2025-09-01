@@ -1,36 +1,48 @@
 # API de Productos y Carritos (Node.js + Express)
 
-API para gestionar **productos** y **carritos de compra** con persistencia en archivos JSON usando el sistema de archivos. Cumple los requisitos de la *Primera Entrega* del curso: rutas separadas, IDs autogenerados, y operaciones CRUD.
+API para gestionar **productos** y **carritos de compra** con persistencia en archivos JSON usando el sistema de archivos (filesystem). Cumple los requisitos de la *Primera Entrega* del curso: rutas separadas, IDs autogenerados, y operaciones CRUD. Incluye **vistas Handlebars** y una vista **en tiempo real** con **WebSockets** (Entrega N°2).
 
 ## Tecnologías
-
 - Node.js
 - Express
+- express-handlebars (vistas)
+- Socket.io (tiempo real)
 - File System (fs/promises)
 
 ## Estructura del proyecto
 
 ```
 
-primera_entrega/
+segunda_entrega/
 ├─ src/
-│  ├─ data/
-│  │  ├─ carts.json
-│  │  └─ products.json
-│  ├─ managers/
-│  │  ├─ CartManager.js
-│  │  └─ ProductManager.js
-│  ├─ routes/
-│  │  ├─ carts.router.js
-│  │  └─ products.router.js
-│  ├─ utils/
-│  │  └─ fileUtils.js
-│  └─ app.js
+│ ├─ data/
+│ │ ├─ carts.json
+│ │ └─ products.json
+│ ├─ managers/
+│ │ ├─ CartManager.js
+│ │ └─ ProductManager.js
+│ ├─ public/
+│ │ └─ js/
+│ │    └─ realtime.js
+│ ├─ routes/
+│ │ ├─ carts.router.js
+│ │ ├─ products.router.js
+│ │ └─ views.router.js
+│ ├─ utils/
+│ │ └─ fileUtils.js
+│ ├─ views/
+│ │ ├─ layouts/
+│ │ │  └─ main.handlebars
+│ │ ├─ home.handlebars
+│ │ └─ realTimeProducts.handlebars
+│ ├─ di.js
+│ ├─ socket.js
+│ └─ app.js
 ├─ .gitignore
 ├─ README.md
 ├─ package-lock.json
 ├─ package.json
-└─ test_api.ps
+└─ test_api.ps1
 
 ````
 
@@ -38,6 +50,9 @@ primera_entrega/
 
 ```bash
 npm install
+npm i
+npm i express-handlebars socket.io
+npm i -D nodemon
 ````
 
 ## Ejecución

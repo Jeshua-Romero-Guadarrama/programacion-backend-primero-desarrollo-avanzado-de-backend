@@ -1,37 +1,53 @@
+// src/app.js
 const express = require('express');
 const path = require('path');
+const http = require('http');
+const { engine } = require('express-handlebars');
 const { ensureFile } = require('./utils/fileUtils');
 
 const productsRouter = require('./routes/products.router');
 const cartsRouter = require('./routes/carts.router');
+const viewsRouter = require('./routes/views.router');
+const { initSocket } = require('./socket');
 
 const app = express();
 
 // -------- Middlewares base --------
-// Límite de tamaño al JSON para evitar cargas excesivas accidentales
 app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Public estático (para /js/realtime.js, css, etc.)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Handlebars
+app.engine('handlebars', engine({
+  defaultLayout: 'main',
+  helpers: {
+    currency(value, curr = 'MXN') {
+      try {
+        return new Intl.NumberFormat('es-MX', { style: 'currency', currency: curr }).format(Number(value));
+      } catch {
+        return value;
+      }
+    }
+  }
+}));
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
+app.use((req, res, next) => {
+  res.locals.year = new Date().getFullYear();
+  next();
+});
 
 // -------- Rutas de la API --------
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
+// -------- Vistas --------
+app.use('/', viewsRouter);
+
 // Salud del servicio
 app.get('/health', (_req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
-
-// Portada simple
-app.get('/', (_req, res) => {
-  res.type('html').send(`
-    <h1>API tienda</h1>
-    <p>Rutas disponibles:</p>
-    <ul>
-      <li>GET <code>/health</code></li>
-      <li>GET/POST/PUT/DELETE <code>/api/products</code></li>
-      <li>POST <code>/api/carts</code></li>
-      <li>GET <code>/api/carts/:cid</code></li>
-      <li>POST <code>/api/carts/:cid/product/:pid</code></li>
-    </ul>
-  `);
-});
 
 // -------- 404 para rutas no encontradas --------
 app.use((req, res, _next) => {
@@ -63,8 +79,12 @@ async function bootstrap() {
   await ensureFile(productsFile, '[]');
   await ensureFile(cartsFile, '[]');
 
+  // Crear servidor HTTP y adjuntar Socket.io
+  server = http.createServer(app);
+  initSocket(server);
+
   // Arrancar servidor
-  server = app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
   });
 
@@ -75,7 +95,6 @@ async function bootstrap() {
       console.log('Servidor cerrado. ¡Hasta luego!');
       process.exit(0);
     });
-    // Forzar salida si tarda demasiado
     setTimeout(() => process.exit(1), 5000).unref();
   };
 

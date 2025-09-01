@@ -1,5 +1,16 @@
 [
   {
+    "id": 1,
+    "title": "Laptop Pro 14",
+    "description": "Equipo portátil de alto rendimiento con 16GB RAM y 512GB SSD",
+    "code": "LP14-001",
+    "price": 28999.90,
+    "status": true,
+    "stock": 50,
+    "category": "computo",
+    "thumbnails": ["images/lp14-front.jpg", "images/lp14-back.jpg"]
+  },
+  {
     "id": 2,
     "title": "Mouse Inalámbrico",
     "description": "Mouse óptico 1600dpi",
@@ -8,8 +19,204 @@
     "status": true,
     "stock": 200,
     "category": "accesorios",
-    "thumbnails": [
-      "images/mouse.jpg"
-    ]
+    "thumbnails": ["images/mouse.jpg"]
+  },
+  {
+    "id": 3,
+    "title": "Teclado Mecánico",
+    "description": "Teclado mecánico con switches azules y retroiluminación",
+    "code": "KB-001",
+    "price": 1299.99,
+    "status": true,
+    "stock": 100,
+    "category": "accesorios",
+    "thumbnails": ["images/keyboard-mech.jpg"]
+  },
+  {
+    "id": 4,
+    "title": "Monitor 27\" 144Hz",
+    "description": "Monitor 27 pulgadas, 144Hz, 1ms, panel IPS",
+    "code": "MN27-144",
+    "price": 5499.00,
+    "status": true,
+    "stock": 35,
+    "category": "monitores",
+    "thumbnails": ["images/monitor27-144.jpg"]
+  },
+  {
+    "id": 5,
+    "title": "Audífonos Bluetooth",
+    "description": "Audífonos inalámbricos con cancelación pasiva de ruido",
+    "code": "AU-BT01",
+    "price": 899.00,
+    "status": true,
+    "stock": 120,
+    "category": "audio",
+    "thumbnails": ["images/headphones-bt.jpg"]
+  },
+  {
+    "id": 6,
+    "title": "SSD 1TB NVMe",
+    "description": "Unidad de estado sólido NVMe de 1TB, lectura 3500MB/s",
+    "code": "SSD-1TB",
+    "price": 1499.00,
+    "status": true,
+    "stock": 80,
+    "category": "almacenamiento",
+    "thumbnails": ["images/ssd-1tb.jpg"]
+  },
+  {
+    "id": 7,
+    "title": "Disco Duro 2TB",
+    "description": "HDD 2TB 7200rpm para escritorio",
+    "code": "HDD-2TB",
+    "price": 1099.00,
+    "status": true,
+    "stock": 60,
+    "category": "almacenamiento",
+    "thumbnails": ["images/hdd-2tb.jpg"]
+  },
+  {
+    "id": 8,
+    "title": "Tarjeta Gráfica GTX 1660",
+    "description": "GPU GTX 1660 6GB, ideal para gaming 1080p",
+    "code": "GPU-1660",
+    "price": 5999.00,
+    "status": true,
+    "stock": 15,
+    "category": "computo",
+    "thumbnails": ["images/gpu-1660.jpg"]
+  },
+  {
+    "id": 9,
+    "title": "Silla Ergonómica",
+    "description": "Silla de oficina con soporte lumbar y ajuste de altura",
+    "code": "CH-AERO",
+    "price": 3299.00,
+    "status": true,
+    "stock": 25,
+    "category": "oficina",
+    "thumbnails": ["images/chair-ergonomic.jpg"]
+  },
+  {
+    "id": 10,
+    "title": "Router WiFi 6 AX1800",
+    "description": "Router dual band con tecnología WiFi 6",
+    "code": "RT-AX1800",
+    "price": 1399.00,
+    "status": true,
+    "stock": 40,
+    "category": "redes",
+    "thumbnails": ["images/router-ax1800.jpg"]
+  },
+  {
+    "id": 11,
+    "title": "Teclado Inalámbrico Compacto",
+    "description": "Teclado slim 75% con receptor USB",
+    "code": "KB-002",
+    "price": 799.00,
+    "status": true,
+    "stock": 110,
+    "category": "accesorios",
+    "thumbnails": ["images/keyboard-compact.jpg"]
+  },
+  {
+    "id": 12,
+    "title": "Mouse Gamer",
+    "description": "Mouse gamer con 6 botones programables y 12000 DPI",
+    "code": "MS-G502",
+    "price": 999.00,
+    "status": true,
+    "stock": 90,
+    "category": "accesorios",
+    "thumbnails": ["images/mouse-gamer.jpg"]
+  },
+  {
+    "id": 13,
+    "title": "Micrófono USB",
+    "description": "Micrófono condensador USB con patrón cardioide",
+    "code": "MIC-USB",
+    "price": 1299.00,
+    "status": true,
+    "stock": 70,
+    "category": "audio",
+    "thumbnails": ["images/mic-usb.jpg"]
+  },
+  {
+    "id": 14,
+    "title": "Webcam 1080p",
+    "description": "Cámara web Full HD con micrófono integrado",
+    "code": "CAM-1080",
+    "price": 699.00,
+    "status": true,
+    "stock": 85,
+    "category": "accesorios",
+    "thumbnails": ["images/webcam-1080.jpg"]
+  },
+  {
+    "id": 15,
+    "title": "Hub USB-C 7 en 1",
+    "description": "Hub con HDMI, USB 3.0, SD/microSD y PD",
+    "code": "HUB-UC7",
+    "price": 899.00,
+    "status": true,
+    "stock": 65,
+    "category": "accesorios",
+    "thumbnails": ["images/hub-usbc-7.jpg"]
+  },
+  {
+    "id": 16,
+    "title": "Cargador 65W USB-C PD",
+    "description": "Cargador GaN 65W con USB-C Power Delivery",
+    "code": "CHG-65W",
+    "price": 649.00,
+    "status": true,
+    "stock": 100,
+    "category": "accesorios",
+    "thumbnails": ["images/charger-65w.jpg"]
+  },
+  {
+    "id": 17,
+    "title": "Cable HDMI 2.1 (2m)",
+    "description": "Cable HDMI 2.1 8K/60 4K/120 de 2 metros",
+    "code": "HDMI-21-2M",
+    "price": 299.00,
+    "status": true,
+    "stock": 200,
+    "category": "accesorios",
+    "thumbnails": ["images/hdmi-2-1.jpg"]
+  },
+  {
+    "id": 18,
+    "title": "Monitor 34\" Ultrawide",
+    "description": "Monitor 34 pulgadas ultrawide, 3440x1440, 100Hz",
+    "code": "MN34-UW",
+    "price": 9999.00,
+    "status": true,
+    "stock": 10,
+    "category": "monitores",
+    "thumbnails": ["images/monitor34-uw.jpg"]
+  },
+  {
+    "id": 19,
+    "title": "Impresora Láser Monocromática",
+    "description": "Impresora láser mono con WiFi y dúplex",
+    "code": "PRN-LSRM",
+    "price": 3499.00,
+    "status": true,
+    "stock": 12,
+    "category": "impresion",
+    "thumbnails": ["images/printer-laser.jpg"]
+  },
+  {
+    "id": 20,
+    "title": "Mochila para Laptop 15.6\"",
+    "description": "Mochila resistente al agua con compartimento acolchado",
+    "code": "BP-156",
+    "price": 899.00,
+    "status": true,
+    "stock": 55,
+    "category": "movilidad",
+    "thumbnails": ["images/backpack-156.jpg"]
   }
 ]
