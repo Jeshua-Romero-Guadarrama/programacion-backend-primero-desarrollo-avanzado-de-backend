@@ -1,0 +1,35 @@
+<section class="card shadow-sm">
+  <div class="card-body">
+    <div class="row g-4">
+      <div class="col-md-5">
+        {{#if prod.thumbnails.[0]}}
+          <img src="{{prod.thumbnails.[0]}}" class="img-fluid rounded" alt="">
+        {{/if}}
+      </div>
+      <div class="col-md-7">
+        <h3 class="mb-1">{{prod.title}}</h3>
+        <p class="text-muted">{{prod.category}} · {{prod.code}}</p>
+        <p>
+          <span class="badge text-bg-success">{{currency prod.price}}</span>
+          <span class="badge text-bg-info">Stock: {{prod.stock}}</span>
+          {{#if prod.status}}<span class="badge text-bg-primary">Disponible</span>{{else}}<span class="badge text-bg-secondary">No disponible</span>{{/if}}
+        </p>
+        <p>{{prod.description}}</p>
+        <button class="btn btn-primary" onclick="addToCart('{{prod._id}}')">Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+async function addToCart(pid){
+  const cid = prompt('ID del carrito:', '');
+  if(!cid) return;
+  try{
+    const resp = await fetch(`/api/carts/${cid}/product/${pid}`, { method:'POST' });
+    const json = await resp.json();
+    if(!resp.ok || json.status!=='success') throw new Error(json.message||'Error');
+    alert('Agregado!');
+  }catch(e){ alert(e.message); }
+}
+</script>

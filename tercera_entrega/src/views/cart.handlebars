@@ -1,0 +1,57 @@
+<section class="card shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-semibold">Carrito {{cart._id}}</span>
+    <button class="btn btn-sm btn-outline-danger" onclick="clearCart('{{cart._id}}')">Vaciar carrito</button>
+  </div>
+  <div class="card-body p-0">
+    {{#if cart.products.length}}
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th class="text-end">Precio</th>
+              <th class="text-center">Cantidad</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each cart.products}}
+            <tr>
+              <td><a href="/products/{{this.product._id}}">{{this.product.title}}</a></td>
+              <td>{{this.product.category}}</td>
+              <td class="text-end">{{currency this.product.price}}</td>
+              <td class="text-center">
+                <input type="number" min="1" value="{{this.quantity}}" class="form-control form-control-sm" style="width:90px" onchange="updateQty('{{../cart._id}}','{{this.product._id}}', this.value)">
+              </td>
+              <td><button class="btn btn-sm btn-outline-danger" onclick="removeItem('{{../cart._id}}','{{this.product._id}}')">Eliminar</button></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    {{else}}
+      <div class="p-4"><div class="alert alert-info mb-0">Carrito vacío.</div></div>
+    {{/if}}
+  </div>
+</section>
+
+<script>
+async function clearCart(cid){
+  if(!confirm('¿Vaciar carrito?')) return;
+  await fetch(`/api/carts/${cid}`, { method:'DELETE' });
+  location.reload();
+}
+async function removeItem(cid,pid){
+  await fetch(`/api/carts/${cid}/products/${pid}`, { method:'DELETE' });
+  location.reload();
+}
+async function updateQty(cid,pid,qty){
+  await fetch(`/api/carts/${cid}/products/${pid}`, {
+    method:'PUT',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ quantity: Number(qty) })
+  });
+}
+</script>
