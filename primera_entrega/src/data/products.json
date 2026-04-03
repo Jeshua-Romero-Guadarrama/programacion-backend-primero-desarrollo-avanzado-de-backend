@@ -1,0 +1,15 @@
+[
+  {
+    "id": 2,
+    "title": "Mouse Inalámbrico",
+    "description": "Mouse óptico 1600dpi",
+    "code": "MS-001",
+    "price": 399,
+    "status": true,
+    "stock": 200,
+    "category": "accesorios",
+    "thumbnails": [
+      "images/mouse.jpg"
+    ]
+  }
+]

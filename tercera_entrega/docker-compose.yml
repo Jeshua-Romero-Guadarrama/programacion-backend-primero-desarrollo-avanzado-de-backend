@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:7
+    container_name: tienda-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: tienda
+      # Set these in your .env file or environment for production auth
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-}  # Replace with your username
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-}  # Replace with your password
+volumes:
+  mongo_data:

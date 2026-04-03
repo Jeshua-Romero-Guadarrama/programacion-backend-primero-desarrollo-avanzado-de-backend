@@ -1,0 +1,66 @@
+<section class="card shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-semibold">Catálogo (pág. {{page}} de {{totalPages}})</span>
+    <form method="GET" class="d-flex gap-2">
+      <input type="text" class="form-control form-control-sm" name="query" placeholder="query (p.ej. category:accesorios o available)" value="{{q}}">
+      <select class="form-select form-select-sm" name="sort">
+        <option value="" {{#if (eq sort "")}}selected{{/if}}>Sin orden</option>
+        <option value="asc" {{#if (eq sort "asc")}}selected{{/if}}>Precio ↑</option>
+        <option value="desc" {{#if (eq sort "desc")}}selected{{/if}}>Precio ↓</option>
+      </select>
+      <input type="number" min="1" class="form-control form-control-sm" name="limit" value="{{limit}}" style="max-width:100px">
+      <button class="btn btn-sm btn-primary">Filtrar</button>
+    </form>
+  </div>
+  <div class="card-body">
+    {{#if items.length}}
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+        {{#each items}}
+        <div class="col">
+          <div class="card h-100">
+            {{#if this.thumbnails.[0]}}
+              <img src="{{this.thumbnails.[0]}}" class="card-img-top" alt="">
+            {{/if}}
+            <div class="card-body">
+              <h5 class="card-title"><a href="/products/{{this._id}}">{{this.title}}</a></h5>
+              <p class="card-text small text-muted">{{this.category}} · {{this.code}}</p>
+              <p class="mb-2">
+                <span class="badge text-bg-success">{{currency this.price}}</span>
+                <span class="badge text-bg-info">Stock: {{this.stock}}</span>
+              </p>
+              <button class="btn btn-sm btn-outline-primary" data-pid="{{this._id}}" onclick="addToCart(this)">Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      <nav class="mt-3 d-flex justify-content-between">
+        {{#if hasPrevPage}}
+          <a class="btn btn-outline-secondary btn-sm" href="{{prevLink}}">← Anterior</a>
+        {{else}}<span></span>{{/if}}
+        {{#if hasNextPage}}
+          <a class="btn btn-outline-secondary btn-sm" href="{{nextLink}}">Siguiente →</a>
+        {{/if}}
+      </nav>
+    {{else}}
+      <div class="alert alert-warning mb-0">No hay productos.</div>
+    {{/if}}
+  </div>
+</section>
+
+<script>
+async function addToCart(btn){
+  const pid = btn.dataset.pid;
+  const cid = prompt('ID del carrito al que agregar:', '');
+  if(!cid) return;
+  btn.disabled = true;
+  try{
+    const resp = await fetch(`/api/carts/${cid}/product/${pid}`, { method:'POST' });
+    const json = await resp.json();
+    if(!resp.ok || json.status!=='success') throw new Error(json.message||'Error');
+    alert('Agregado!');
+  }catch(e){ alert(e.message); }
+  finally{ btn.disabled = false; }
+}
+</script>
